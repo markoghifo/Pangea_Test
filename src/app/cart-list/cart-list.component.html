@@ -1,0 +1,54 @@
+<div class="side-nav-bar" [ngClass]="{ 'side-nav-bar-collapsed': !(showSideNav | async) }">
+
+    <!-- overlay -->
+    <div class="side-nav-bar-overlay"
+        [ngStyle]="{ 'transition': 'background-color ' + duration + 's, visibility ' + duration + 's' }"
+        [ngClass]="{ 'side-nav-bar-overlay-collapsed': !(showSideNav | async) }" (click)="onSidebarClose()">
+    </div>
+
+    <!-- side bar-->
+    <div class="side-nav-bar-menu-container" [ngStyle]="getSideNavBarStyle()">
+
+        <!-- close button -->
+        <div><span class="material-icons side-nav-bar-close" (click)="onSidebarClose()">clear</span></div>
+
+        <!-- side bar content -->
+        <div class="side-nav-bar-content-container">
+            <select  name="currencies" [(ngModel)]="selectedCurrency" (change)="changePrices(selectedCurrency)"> 
+                <ng-container *ngFor="let curr of currencies|async" >
+                    <option *ngIf="curr!=='AED'" [value]="curr"  >{{curr}}</option>
+                </ng-container>
+            </select>
+            <ng-container *ngIf="(productsInCart$ | async) as productsInCart"  >
+                <ng-container *ngFor="let item of (productsInCart)">
+                    <div class="productTitle">
+                        {{item.title}}
+                    </div>
+                    <div class="productImage">
+                        <img class="productImage" style="width: 50px; height: 50px;" src="{{item.image_url}}"
+                            alt="{{item.title}}" onError="this.src='assets/images/products/default-product.jpg';">
+                    </div>
+                    <div class="quantity">
+                        <button (click)="addToCart(item)">
+                            +
+                        </button>
+                        <span>{{item.cartQuantity}}</span>
+                        <button (click)="removeFromCart(item)">
+                            -
+                        </button>
+                    </div>
+                    <div class="price">
+                        {{item.price}}
+                    </div>
+                </ng-container>
+    
+                <div class="d-flex justify-content-between">
+                    <div><h4>Sub Total</h4></div>
+                    <div><h4>{{subTotal(productsInCart) | currency:selectedCurrency}}</h4></div>
+                </div>
+                
+            </ng-container>
+
+        </div>
+    </div>
+</div>

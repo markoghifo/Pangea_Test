@@ -1,1 +1,47 @@
 /* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/css2?family=Alata&display=swap");
+:root {
+  --primaryColor: #f09d51;
+  --mainWhite: #fff;
+  --mainBlack: #222;
+  --mainGrey: #ececec;
+  --mainSpacing: 0.1rem;
+  --mainTransition: all 0.3s linear;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  color: var(--mainBlack);
+  background: var(--mainWhite);
+}
+
+//Grid System
+.row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+.col {
+  width: 33.33%;
+  float: left;
+  padding: 15px;
+}
+
+button {
+  background-color: #3f3f3f;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  // display: inline-block;
+  font-size: 0.5rem;
+}
+
+@media only screen and (max-width: 768px) {
+  .col {
+    width: 50%;
+  }
+}

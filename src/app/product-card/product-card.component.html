@@ -1,0 +1,21 @@
+<div class="card" *ngIf="product">
+    <div class="position-relative w-100">
+        <div class="card-img-top" style="min-height: 100px; text-align: center;">
+            <img class="productImage" style="width: auto; height: 350px; max-width: 100%;" src="{{product.image_url}}"
+                alt="{{product.title}}" onError="this.src='assets/images/products/default-product.jpg';">
+        </div>
+        <div class="card-body p-2 mb-1">
+            <div title="{{product.title}}" class="is-clickable productName">
+                {{product.title}}</div>
+            <p class="price">
+                {{selectedCurr}}{{product.price | number}}
+            </p>
+            <div class="btn">
+                <button (click)="addToCartx()">
+                Add To Cart
+            </button>
+            </div>
+            
+        </div>
+    </div>
+</div>
