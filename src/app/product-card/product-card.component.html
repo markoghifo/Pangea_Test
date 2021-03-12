@@ -1,21 +1,16 @@
-<div class="card" *ngIf="product">
-    <div class="position-relative w-100">
-        <div class="card-img-top" style="min-height: 100px; text-align: center;">
-            <img class="productImage" style="width: auto; height: 350px; max-width: 100%;" src="{{product.image_url}}"
-                alt="{{product.title}}" onError="this.src='assets/images/products/default-product.jpg';">
+<div class="prod-card" *ngIf="product">
+    <div class="prod-card-in">
+        <div class="img-cont">
+            <a class="img-link" href="#">
+                <img class="img-css" alt="{{product.title}}" src="{{product.image_url}}"
+                    onError="this.src='assets/images/products/default-product.jpg';">
+                <h2 class="prod-title">{{product.title}}</h2>
+            </a>
         </div>
-        <div class="card-body p-2 mb-1">
-            <div title="{{product.title}}" class="is-clickable productName">
-                {{product.title}}</div>
-            <p class="price">
-                {{selectedCurr}}{{product.price | number}}
-            </p>
-            <div class="btn">
-                <button (click)="addToCartx()">
-                Add To Cart
-            </button>
-            </div>
-            
+        <div class="price-cont">
+            <p class="price-from">From:</p>
+            <p class="price">{{product.price | currency:selectedCurr}}</p>
         </div>
+        <button type="button" (click)="addToCartx()" class="add-to-cart-btn">Add to Cart</button>
     </div>
 </div>

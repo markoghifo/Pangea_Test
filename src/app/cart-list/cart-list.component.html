@@ -14,41 +14,53 @@
 
         <!-- side bar content -->
         <div class="side-nav-bar-content-container">
-            <select  name="currencies" [(ngModel)]="selectedCurrency" (change)="changePrices(selectedCurrency)"> 
-                <ng-container *ngFor="let curr of currencies|async" >
-                    <option *ngIf="curr!=='AED'" [value]="curr"  >{{curr}}</option>
-                </ng-container>
-            </select>
-            <ng-container *ngIf="(productsInCart$ | async) as productsInCart"  >
-                <ng-container *ngFor="let item of (productsInCart)">
-                    <div class="productTitle">
-                        {{item.title}}
-                    </div>
-                    <div class="productImage">
-                        <img class="productImage" style="width: 50px; height: 50px;" src="{{item.image_url}}"
-                            alt="{{item.title}}" onError="this.src='assets/images/products/default-product.jpg';">
-                    </div>
-                    <div class="quantity">
-                        <button (click)="addToCart(item)">
-                            +
-                        </button>
-                        <span>{{item.cartQuantity}}</span>
-                        <button (click)="removeFromCart(item)">
-                            -
-                        </button>
-                    </div>
-                    <div class="price">
-                        {{item.price}}
-                    </div>
-                </ng-container>
-    
-                <div class="d-flex justify-content-between">
-                    <div><h4>Sub Total</h4></div>
-                    <div><h4>{{subTotal(productsInCart) | currency:selectedCurrency}}</h4></div>
+                <div class="currency-select-row">
+                    <select class="currency-select " [(ngModel)]="selectedCurrency"
+                        (change)="changePrices(selectedCurrency)" style="max-width: 80px;">
+                        <ng-container *ngFor="let curr of currencies|async">
+                            <option *ngIf="curr!=='AED'" [value]="curr">{{curr}}</option>
+                        </ng-container>
+                    </select>
                 </div>
-                
-            </ng-container>
+                <div class="react-cart-body" *ngIf="(productsInCart$ | async) as productsInCart">
 
+                    <ng-container *ngFor="let item of (productsInCart)">
+                        <div class="cart-item-list" style="margin-top: 10px;">
+                            <div class="cart-item">
+                                <div class="product-description"><span class="remove-product" style="cursor: pointer;"
+                                        (click)="removeFromCart(item, true)">x</span>
+                                    <h6>{{item.title}}</h6>
+                                    <div class="quantity">
+                                        <div class="quantity-selector">
+                                            <span class="counter-action decrement"
+                                                (click)="removeFromCart(item)">-</span>
+                                            <span class="counter-number counter"> {{item.cartQuantity}} </span>
+                                            <span class="counter-action increment" (click)="addToCart(item)">+</span>
+                                        </div>
+                                        <div class="price">
+                                            {{selectedCurrency}}&nbsp;{{item.price|currency:selectedCurrency}}</div>
+                                    </div>
+                                </div>
+                                <div class="product-image"><img src="{{item.image_url}}" alt="{{item.title}}"
+                                        onError="this.src='assets/images/products/default-product.jpg';">
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            <div class="cart-footer2" *ngIf="(productsInCart$ | async) as productsInCart">
+                <div class="cart-subtotal">
+                    <span>Subtotal</span>
+                    <div class="subtotal-price">{{subTotal(productsInCart) | currency:selectedCurrency}}
+                    </div>
+                </div>
+                <div class="react-cart-buttons">
+                    <button type="button" class="subscription-btn">
+                        <span class="">MAKE THIS A SUBSCRIPTION (SAVE 20%)</span>
+                    </button>
+                    <button type="submit" class="checkout-btn">PROCEED TO CHECKOUT</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>

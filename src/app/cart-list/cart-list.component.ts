@@ -24,7 +24,7 @@ export class CartListComponent implements OnInit {
   @Input() direction: SideNavDirection = SideNavDirection.Right;
 
   productsInCart$: Observable<Product[]>;
-  selectedCurrency = 'USD';
+  selectedCurrency: string;
 
   cartItems: Product[] = [];
   currencies: Observable<string[]>;
@@ -33,26 +33,10 @@ export class CartListComponent implements OnInit {
     this.showSideNav = this.navService.getShowNav();
     this.cartItems = this.cartService.cartItems;
     this.productsInCart$ = this.cartService.productsInCart$;
-    // this.cartService.products$.subscribe(
-    //   prod => {
-    //     prod.map(p => {
-    //       if (p.cartQuantity && p.cartQuantity > 0) {
-    //         var index = this.cartItems.findIndex(x => p.id == x.id);
-    //         if (index < 0) {
-    //           this.cartItems.push(p);
-    //         }
-    //         else {
-    //           this.cartItems[index] = p;
-    //         }
-    //       }
-    //     });
-    //     console.log(this.cartItems)
-    //   }
-    // )
-
     this.currencies = this.apollo.watchQuery<CurrenciesReponse>({
       query: CURRENCY_QUERY
     }).valueChanges.pipe(map(result => result.data && result.data.currency));
+    this.selectedCurrency = this.cartService.selectedCurr;
   }
 
   ngOnInit(): void {
@@ -86,13 +70,15 @@ export class CartListComponent implements OnInit {
   }
 
 
-  removeFromCart(product: Product): void {
-    this.cartService.removeFromCartx(product);
+  removeFromCart(product: Product, completely: boolean = false): void {
+    this.cartService.removeFromCartx(product, completely);
   }
 
   changePrices(curr: string): void {
+    this.selectedCurrency = curr;
     this.cartService.updateProduct.next(curr);
   }
+
   subTotal(productsInCart: Product[]): number {
     const total = productsInCart.map(prod => {
       const sum = (prod.cartQuantity || 1) * prod.price;
